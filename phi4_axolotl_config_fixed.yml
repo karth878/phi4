@@ -11,6 +11,9 @@ strict: false
 datasets:
   - path: ./prepared_all_memory_types_corrected
     type: chat_template
+    field_messages: messages
+    message_field_role: role
+    message_field_content: content
 
 dataset_prepared_path:
 val_set_size: 0.05
@@ -108,8 +111,8 @@ fsdp_config:
 # Special tokens - use model defaults
 special_tokens:
 
-# Chat template - use model's default
-chat_template: tokenizer_default
+# Chat template - let Axolotl auto-detect
+chat_template:
 
 # Generation configuration (for inference reference)
 # Note: These are not used during training but good to document
