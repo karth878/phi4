@@ -85,13 +85,11 @@ save_strategy: steps
 save_total_limit: 3
 
 # Evaluation configuration
-evals_per_epoch: 4
 eval_max_new_tokens: 4096
 eval_table_size:
 eval_sample_packing: false
 
 # Saving configuration
-saves_per_epoch: 2
 save_safetensors: true
 
 # Regularization
