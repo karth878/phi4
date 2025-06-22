@@ -10,11 +10,7 @@ strict: false
 # Dataset configuration
 datasets:
   - path: ./prepared_all_memory_types_corrected
-    type: sharegpt
-    conversation_template: phi-4
-    field_messages: messages
-    field_roles: role
-    field_content: content
+    type: chat_template
 
 dataset_prepared_path:
 val_set_size: 0.05
@@ -113,7 +109,7 @@ fsdp_config:
 special_tokens:
 
 # Chat template - use model's default
-chat_template: phi-4
+chat_template: tokenizer_default
 
 # Generation configuration (for inference reference)
 # Note: These are not used during training but good to document
