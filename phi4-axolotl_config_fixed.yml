@@ -1,0 +1,131 @@
+base_model: microsoft/Phi-4-reasoning-plus
+model_type: AutoModelForCausalLM
+tokenizer_type: AutoTokenizer
+
+# Model loading configuration
+load_in_8bit: false
+load_in_4bit: true
+strict: false
+
+# Dataset configuration
+datasets:
+  - path: ./prepared_all_memory_types_corrected
+    type: chat_template
+    # Remove these if your dataset doesn't have these fields
+    # field_instruction: instruction
+    # field_output: output
+
+dataset_prepared_path:
+val_set_size: 0.05
+output_dir: ./phi4_axolotl_outputs_fixed
+
+# Sequence and packing configuration
+sequence_len: 8192  # Increased for longer responses
+sample_packing: false  # Disabled to avoid truncation
+pad_to_sequence_len: true
+eval_packing_ratio: 1.0
+
+# LoRA adapter configuration
+adapter: lora
+lora_model_dir:
+lora_r: 64
+lora_alpha: 16
+lora_dropout: 0.05
+lora_target_linear: true
+lora_fan_in_fan_out: false
+lora_target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+  - gate_proj
+  - up_proj
+  - down_proj
+
+# Weights & Biases logging
+wandb_project: phi4-axolotl-training-fixed
+wandb_entity:
+wandb_watch:
+wandb_name: phi4-informius-axolotl-fixed
+wandb_log_model:
+report_to: wandb
+
+# Training hyperparameters
+gradient_accumulation_steps: 4
+micro_batch_size: 1
+num_epochs: 3
+optimizer: adamw_torch
+lr_scheduler: cosine
+learning_rate: 0.0002
+warmup_steps: 100
+warmup_ratio: 0.1
+
+# Training configuration
+train_on_inputs: true  # Train on full conversations
+group_by_length: false
+bf16: auto
+fp16:
+tf32: false
+
+# Memory optimization
+gradient_checkpointing: true
+gradient_checkpointing_kwargs:
+  use_reentrant: false
+
+# Attention configuration
+flash_attention: true  # Disable if not supported
+xformers_attention: false
+
+# Logging and evaluation
+logging_steps: 10
+eval_steps: 50
+save_steps: 100
+eval_strategy: steps
+save_strategy: steps
+save_total_limit: 3
+
+# Evaluation configuration
+evals_per_epoch: 4
+eval_max_new_tokens: 4096
+eval_table_size:
+eval_sample_packing: false
+
+# Saving configuration
+saves_per_epoch: 2
+save_safetensors: true
+
+# Regularization
+weight_decay: 0.01
+max_grad_norm: 1.0
+ddp_find_unused_parameters: false
+
+# Resume training
+early_stopping_patience:
+resume_from_checkpoint:
+local_rank:
+device_map:
+
+# Debugging
+debug:
+deepspeed:
+fsdp:
+fsdp_config:
+
+# Special tokens - use model defaults
+special_tokens:
+
+# Chat template - use model's default
+chat_template:  # null or leave empty for auto-detection
+
+# Generation configuration (for inference reference)
+# Note: These are not used during training but good to document
+# generation_config:
+#   max_new_tokens: 4096
+#   temperature: 0.7
+#   do_sample: true
+#   top_p: 0.95
+#   top_k: 50
+#   repetition_penalty: 1.1
+#   length_penalty: 1.0
+#   early_stopping: false
+#   no_repeat_ngram_size: 3

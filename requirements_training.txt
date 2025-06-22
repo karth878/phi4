@@ -1,0 +1,41 @@
+# Phi-4 Axolotl Training Requirements
+# Install in order for best compatibility
+
+# Core PyTorch (install first)
+torch>=2.1.0
+torchvision
+torchaudio
+
+# Axolotl for training (install after PyTorch)
+axolotl[deepspeed]>=0.4.0
+
+# Hugging Face ecosystem
+transformers>=4.37.0
+datasets>=2.14.0
+accelerate>=0.25.0
+peft>=0.8.0
+
+# Training frameworks
+trl>=0.7.4
+bitsandbytes>=0.41.1
+
+# Deep learning optimization
+deepspeed>=0.12.0
+# flash-attn>=2.5.0  # Install separately if needed
+
+# Utilities
+wandb>=0.16.0
+tensorboard>=2.14.0
+scipy>=1.11.0
+sentencepiece>=0.1.99
+protobuf>=4.24.0
+
+# Additional dependencies
+numpy>=1.24.0
+pandas>=2.0.0
+scikit-learn>=1.3.0
+packaging>=21.0
+psutil>=5.9.0
+
+# YAML processing for configs
+pyyaml>=6.0
