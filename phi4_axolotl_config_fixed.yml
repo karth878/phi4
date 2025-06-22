@@ -58,7 +58,6 @@ optimizer: adamw_torch
 lr_scheduler: cosine
 learning_rate: 0.0002
 warmup_steps: 100
-warmup_ratio: 0.1
 
 # Training configuration
 train_on_inputs: true  # Train on full conversations
