@@ -20,7 +20,7 @@ val_set_size: 0.05
 output_dir: ./phi4_axolotl_outputs_fixed
 
 # Sequence and packing configuration
-sequence_len: 8192
+sequence_len: 4096  # Reduced from 8192 to fit in memory
 sample_packing: false
 pad_to_sequence_len: true
 eval_packing_ratio: 1.0
@@ -50,9 +50,9 @@ wandb_name: phi4-informius-axolotl-fixed-h100-optimized
 wandb_log_model:
 report_to: wandb
 
-# Training hyperparameters - OPTIMIZED FOR H100
-gradient_accumulation_steps: 1  # Reduced since micro_batch_size increased
-micro_batch_size: 16  # Dramatically increased from 1 - start here, can go higher
+# Training hyperparameters - CONSERVATIVE FOR MEMORY
+gradient_accumulation_steps: 2  # Balanced approach
+micro_batch_size: 4  # Conservative increase from 1
 num_epochs: 3
 optimizer: adamw_torch
 lr_scheduler: cosine
@@ -66,8 +66,8 @@ bf16: true      # H100 optimized precision
 fp16: false     # Use bf16 instead
 tf32: true      # Enable for H100 performance boost
 
-# Memory optimization - DISABLED FOR H100
-gradient_checkpointing: false  # MAJOR SPEEDUP - disabled due to abundant memory
+# Memory optimization - PARTIAL RE-ENABLE FOR SAFETY
+gradient_checkpointing: true   # Re-enable to save memory
 gradient_checkpointing_kwargs:
   use_reentrant: false
 
@@ -97,7 +97,7 @@ max_grad_norm: 1.0
 ddp_find_unused_parameters: false
 
 # Resume training - ADD YOUR CHECKPOINT PATH
-resume_from_checkpoint: ./phi4_axolotl_outputs_fixed/checkpoint-500  # UPDATE THIS TO YOUR LATEST CHECKPOINT
+resume_from_checkpoint: ./phi4_axolotl_outputs_fixed/checkpoint-450  # UPDATE THIS TO YOUR LATEST CHECKPOINT
 early_stopping_patience:
 local_rank:
 device_map:
