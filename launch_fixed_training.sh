@@ -58,13 +58,13 @@ for file in "${REQUIRED_FILES[@]}"; do
 done
 
 # Check config file
-if [ ! -f "phi4_axolotl_config_fixed.yml" ]; then
-    echo "❌ Fixed Axolotl config 'phi4_axolotl_config_fixed.yml' not found!"
+if [ ! -f "phi4_axolotl_config_fixed2.yml" ]; then
+    echo "❌ Fixed Axolotl config 'phi4_axolotl_config_fixed2.yml' not found!"
     exit 1
 fi
 
 # Verify config has correct sequence length
-SEQ_LEN=$(grep "sequence_len:" phi4_axolotl_config_fixed.yml | awk '{print $2}')
+SEQ_LEN=$(grep "sequence_len:" phi4_axolotl_config_fixed2.yml | awk '{print $2}')
 if [ "$SEQ_LEN" -lt 8192 ]; then
     echo "⚠️  WARNING: Your config has sequence_len: $SEQ_LEN"
     echo "   This is TOO SHORT for complete answers!"
@@ -102,7 +102,7 @@ echo "   - 1493% increase in content richness!"
 # Display UPDATED training configuration
 echo "⚙️  UPDATED Training Configuration:"
 echo "   Framework: Axolotl"
-echo "   Config: phi4_axolotl_config_fixed.yml"
+echo "   Config: phi4_axolotl_config_fixed2.yml"
 echo "   Dataset: prepared_all_memory_types_corrected (ALL 7 MEMORY TYPES)"
 echo "   Sequence length: 8192 (properly sized for complete responses)"
 echo "   Sample packing: DISABLED (to prevent truncation)"
@@ -132,7 +132,7 @@ echo "   - Flash Attention can help if supported"
 # Confirm before starting
 echo ""
 echo "🎯 Ready to train with PROPERLY CONFIGURED COMPLETE DATASET!"
-echo "Command: python -m axolotl.cli.train phi4_axolotl_config_fixed.yml"
+echo "Command: python -m axolotl.cli.train phi4_axolotl_config_fixed2.yml"
 echo ""
 echo "⚠️  IMPORTANT: Make sure your config file has:"
 echo "   - sequence_len: 8192"
@@ -158,14 +158,14 @@ export TOKENIZERS_PARALLELISM=false  # Prevent tokenizer warnings
 
 # Create backup of current config
 echo "📝 Creating config backup..."
-cp phi4_axolotl_config_fixed.yml "phi4_axolotl_config_backup_$(date +%Y%m%d_%H%M%S).yml"
+cp phi4_axolotl_config_fixed2.yml "phi4_axolotl_config_backup_$(date +%Y%m%d_%H%M%S).yml"
 
 # Create training session info
 echo "📝 Creating training session info..."
 SESSION_LOG="training_session_$(date +%Y%m%d_%H%M%S).log"
 echo "Training started: $(date)" > $SESSION_LOG
 echo "Dataset: prepared_all_memory_types_corrected" >> $SESSION_LOG
-echo "Config: phi4_axolotl_config_fixed.yml" >> $SESSION_LOG
+echo "Config: phi4_axolotl_config_fixed2.yml" >> $SESSION_LOG
 echo "Sequence length: $SEQ_LEN" >> $SESSION_LOG
 echo "Expected improvements: Complete answers, no truncation" >> $SESSION_LOG
 echo "GPU count: $GPU_COUNT" >> $SESSION_LOG
@@ -179,7 +179,7 @@ echo "Monitor GPU memory usage with: watch -n 1 nvidia-smi"
 echo ""
 
 # Run training with nice output
-python -m axolotl.cli.train phi4_axolotl_config_fixed.yml 2>&1 | tee -a $SESSION_LOG
+python -m axolotl.cli.train phi4_axolotl_config_fixed2.yml 2>&1 | tee -a $SESSION_LOG
 
 # Check if training completed successfully
 if [ ${PIPESTATUS[0]} -eq 0 ]; then
@@ -190,7 +190,7 @@ if [ ${PIPESTATUS[0]} -eq 0 ]; then
     echo "   Your model should now give COMPLETE answers!"
     echo ""
     echo "To test your improved model:"
-    echo "   python -m axolotl.cli.inference phi4_axolotl_config_fixed.yml \\"
+    echo "   python -m axolotl.cli.inference phi4_axolotl_config_fixed2.yml \\"
     echo "     --max_new_tokens 4096 \\"
     echo "     --temperature 0.7"
     echo ""
@@ -207,7 +207,7 @@ else
     echo ""
     echo "Common issues:"
     echo "   - Out of memory: Try DeepSpeed Zero2/Zero3 or reduce sequence_len"
-    echo "   - Config errors: Verify all parameters in phi4_axolotl_config_fixed.yml"
+    echo "   - Config errors: Verify all parameters in phi4_axolotl_config_fixed2.yml"
     echo "   - Data issues: Check dataset format in prepared_all_memory_types_corrected/"
     exit 1
 fi
